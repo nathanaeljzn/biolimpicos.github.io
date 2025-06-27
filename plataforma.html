@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Questões - Biolímpicos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-green: #1e5631;
+            --medium-green: #2e7d46;
+            --light-green: #4c9c2e;
+            --lighter-green: #76b041;
+            --lightest-green: #a4de6a;
+            --white: #ffffff;
+            --off-white: #f5f9f7;
+            --light-gray: #e0e0e0;
+            --text-dark: #333333;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--off-white);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--dark-green) 0%, var(--medium-green) 100%);
+            color: var(--white);
+            padding: 1.2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-left: 10px;
+            letter-spacing: 0.5px;
+        }
+        
+        .logo-img {
+            height: 50px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-img img {
+            height: 100%;
+            width: auto;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.8rem;
+        }
+        
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0.8rem;
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--lightest-green);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        nav ul li a:hover::after {
+            width: 80%;
+        }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            z-index: 101;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu-btn span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background: var(--white);
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+        
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+        
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 98;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(30, 86, 49, 0.85), rgba(30, 86, 49, 0.9)), url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            padding: 9rem 0 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 20%, rgba(30, 86, 49, 0.7) 90%);
+            z-index: 1;
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.5px;
+        }
+        
+        .hero p {
+            font-size: 1.8rem;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Sections General */
+        section {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark-green);
+            font-weight: 800;
+            display: inline-block;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 5px;
+            background: linear-gradient(to right, var(--light-green), var(--lighter-green));
+            border-radius: 3px;
+        }
+        
+        /* Platform Navigation */
+        .platform-nav {
+            background-color: var(--white);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            margin-bottom: 3rem;
+        }
+        
+        .selection-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .step {
+            text-align: center;
+            position: relative;
+            flex: 1;
+            z-index: 2;
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(to right, var(--light-green), var(--lighter-green));
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 4px 10px rgba(76, 156, 46, 0.3);
+        }
+        
+        .step h3 {
+            color: var(--dark-green);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .step.active .step-number {
+            background: var(--dark-green);
+            transform: scale(1.1);
+        }
+        
+        .step-line {
+            position: absolute;
+            top: 25px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--light-gray);
+            z-index: 1;
+        }
+        
+        .step-line-progress {
+            position: absolute;
+            top: 25px;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--light-green), var(--lighter-green));
+            width: 0%;
+            transition: width 0.5s ease;
+            z-index: 1;
+        }
+        
+        /* Platform Selectors */
+        .selectors-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .selector-card {
+            background: linear-gradient(to bottom, var(--off-white), var(--white));
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border-top: 5px solid var(--light-green);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .selector-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--light-green), var(--lighter-green));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        
+        .selector-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .selector-card:hover::after {
+            transform: scaleX(1);
+        }
+        
+        .selector-card h3 {
+            color: var(--dark-green);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .selector-card h3 i {
+            margin-right: 12px;
+            color: var(--light-green);
+            font-size: 1.8rem;
+        }
+        
+        .selector-card p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text-dark);
+        }
+        
+        .selector-card.selected {
+            background: linear-gradient(to bottom, var(--lightest-green), #d1e8c1);
+            border-color: var(--dark-green);
+        }
+        
+        /* Years Container */
+        .years-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .year-btn {
+            padding: 1rem 1.8rem;
+            background-color: var(--white);
+            border: 2px solid var(--light-gray);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-dark);
+        }
+        
+        .year-btn:hover, .year-btn.selected {
+            background: linear-gradient(to right, var(--light-green), var(--lighter-green));
+            color: var(--white);
+            border-color: var(--light-green);
+            box-shadow: 0 5px 15px rgba(76, 156, 46, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        /* Phases Container */
+        .phases-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .phase-card {
+            background: linear-gradient(to bottom, var(--off-white), var(--white));
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+            border: 2px solid var(--light-gray);
+            cursor: pointer;
+            width: 280px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .phase-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--light-green), var(--lighter-green));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        
+        .phase-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+            border-color: var(--light-green);
+        }
+        
+        .phase-card:hover::after {
+            transform: scaleX(1);
+        }
+        
+        .phase-card.selected {
+            border-color: var(--dark-green);
+            background: linear-gradient(to bottom, var(--lightest-green), #d1e8c1);
+            box-shadow: 0 10px 25px rgba(46, 125, 70, 0.2);
+        }
+        
+        .phase-icon {
+            font-size: 3.5rem;
+            color: var(--medium-green);
+            margin-bottom: 1.5rem;
+        }
+        
+        .phase-card h3 {
+            color: var(--dark-green);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .phase-card p {
+            font-size: 1rem;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        /* Access Button */
+        .access-container {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(76, 156, 46, 0.1);
+            border-radius: 16px;
+            display: none;
+        }
+        
+        .access-container.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .access-container h3 {
+            color: var(--dark-green);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .access-container p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+        }
+        
+        .access-btn {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: linear-gradient(to right, var(--light-green), var(--lighter-green));
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(76, 156, 46, 0.5);
+            text-decoration: none;
+        }
+        
+        .access-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(76, 156, 46, 0.7);
+            background: linear-gradient(to right, var(--lighter-green), var(--lightest-green));
+        }
+        
+        /* Back Button */
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            background-color: var(--white);
+            border: 2px solid var(--light-gray);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            margin-top: 1.5rem;
+            color: var(--medium-green);
+            text-decoration: none;
+        }
+        
+        .back-btn:hover {
+            background-color: var(--off-white);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .back-btn i {
+            margin-right: 8px;
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(to right, var(--dark-green), #1a4d28);
+            color: var(--white);
+            padding: 5rem 0 2rem;
+            position: relative;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.8rem;
+            position: relative;
+            padding-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background: var(--lightest-green);
+            border-radius: 2px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: var(--lightest-green);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-size: 1.05rem;
+        }
+        
+        .footer-links a i {
+            margin-right: 12px;
+            width: 24px;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--white);
+        }
+        
+        .footer-links a:hover i {
+            transform: translateX(5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1.2rem;
+            margin-top: 1.8rem;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.12);
+            color: var(--white);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--lightest-green);
+            color: var(--dark-green);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .container {
+                width: 95%;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3.2rem;
+            }
+            .hero p {
+                font-size: 1.5rem;
+            }
+            .section-title h2 {
+                font-size: 2.3rem;
+            }
+        }
+        
+        /* Mobile Optimization */
+        @media (max-width: 768px) {
+            .header-container {
+                position: relative;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+            }
+            
+            nav ul {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                right: -280px;
+                width: 280px;
+                height: 100%;
+                background-color: var(--dark-green);
+                padding: 80px 0 0;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                transition: transform 0.4s ease;
+                z-index: 100;
+            }
+            
+            nav ul.show {
+                transform: translateX(-280px);
+            }
+            
+            nav ul li {
+                margin: 0;
+                text-align: left;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                transform: none;
+                opacity: 1;
+            }
+            
+            nav ul li:last-child {
+                border-bottom: none;
+            }
+            
+            nav ul li a {
+                display: block;
+                padding: 1.2rem 2rem;
+                border-radius: 0;
+                font-size: 1.1rem;
+            }
+            
+            nav ul li a:hover::after {
+                width: 0;
+            }
+            
+            .selection-steps {
+                flex-direction: column;
+                align-items: center;
+                gap: 3rem;
+                margin-bottom: 2rem;
+            }
+            
+            .step-line {
+                display: none;
+            }
+            
+            .step-line-progress {
+                display: none;
+            }
+            
+            .selectors-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .selector-card {
+                padding: 1.8rem;
+            }
+            
+            .years-container {
+                justify-content: center;
+            }
+            
+            .year-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .phases-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .phase-card {
+                width: 100%;
+                max-width: 320px;
+            }
+            
+            .hero {
+                padding: 7rem 0 4rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero p {
+                font-size: 1.3rem;
+                margin-bottom: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .platform-nav {
+                padding: 1.8rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1.2rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+        
+        /* Add space for section subtitle */
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            color: var(--medium-green);
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        /* Animation for step transitions */
+        .selector-step {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .selector-step.active {
+            display: block;
+        }
+        
+        /* CORREÇÃO 2: Organização dos botões na seção de acesso */
+        .access-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header - Mesmo menu da página Início -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-img">
+                    <img src="https://i.postimg.cc/Y0Kw3PpJ/Logo-Biol-mpicos-2-1.png" alt="Biolímpicos Logo">
+                </div>
+                <h1>Biolímpicos</h1>
+            </div>
+            <button class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav>
+                <ul>
+                    <li><a href="https://nathanaeljzn.github.io/biolimpicos.github.io/">INÍCIO</a></li>
+                    <li><a href="plataforma">PLATAFORMA</a></li>
+                    <li><a href="aulas" class="active">AULAS</a></li>
+                    <li><a href="https://lojabiolimpicos.com">LOJA</a></li>
+                    <li><a href="https://chat.whatsapp.com/FUYDiYjtTbQKERvcwHp1K7">COMUNIDADE</a></li>
+                    <li><a href="https://forms.gle/YXbcEjf83MG7Fiz48">VOLUNTÁRIOS</a></li>
+                    <li><a href="noticias">NOTÍCIAS</a></li>
+                    <li><a href="sobre">SOBRE</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-overlay"></div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Plataforma de Questões</h1>
+                <p>Acesso a provas antigas para sua preparação olímpica</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Navigation -->
+    <section id="selecao-provas">
+        <div class="container">
+            <div class="section-title">
+                <h2>Selecione a Prova</h2>
+            </div>
+            
+            <div class="platform-nav">
+                <div class="selection-steps">
+                    <div class="step-line"></div>
+                    <div class="step-line-progress" id="step-progress"></div>
+                    
+                    <div class="step active" id="step-1">
+                        <div class="step-number">1</div>
+                        <h3>Olimpíada</h3>
+                        <p>Selecione a competição</p>
+                    </div>
+                    
+                    <div class="step" id="step-2">
+                        <div class="step-number">2</div>
+                        <h3>Edição</h3>
+                        <p>Escolha o ano</p>
+                    </div>
+                    
+                    <div class="step" id="step-3">
+                        <div class="step-number">3</div>
+                        <h3>Fase</h3>
+                        <p>Selecione a fase</p>
+                    </div>
+                    
+                    <div class="step" id="step-4">
+                        <div class="step-number">4</div>
+                        <h3>Acessar</h3>
+                        <p>Visualize a prova</p>
+                    </div>
+                </div>
+                
+                <!-- Step 1: Select Olympiad -->
+                <div class="selector-step active" id="step-olympiad">
+                    <h3 class="section-subtitle">Selecione uma Olimpíada Científica</h3>
+                    <div class="selectors-container">
+                        <div class="selector-card" data-olympiad="OBB">
+                            <h3><i class="fas fa-dna"></i> OBB</h3>
+                            <p>Olimpíada Brasileira de Biologia</p>
+                        </div>
+                        <div class="selector-card" data-olympiad="OBC">
+                            <h3><i class="fas fa-flask"></i> OBC</h3>
+                            <p>Olimpíada Brasileira de Ciências</p>
+                        </div>
+                        <div class="selector-card" data-olympiad="IBO">
+                            <h3><i class="fas fa-globe-americas"></i> IBO</h3>
+                            <p>Olimpíada Internacional de Biologia</p>
+                        </div>
+                        <div class="selector-card" data-olympiad="OIAB">
+                            <h3><i class="fas fa-microscope"></i> OIAB</h3>
+                            <p>Olimpíada Ibero-americana de Biologia</p>
+                        </div>
+                        <div class="selector-card" data-olympiad="OBN">
+                            <h3><i class="fas fa-brain"></i> OBN</h3>
+                            <p>Olimpíada Brasileira de Neurociências</p>
+                        </div>
+                        <div class="selector-card" data-olympiad="OBAP">
+                            <h3><i class="fas fa-seedling"></i> OBAP</h3>
+                            <p>Olimpíada Brasileira de Agropecuária</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Select Year -->
+                <div class="selector-step" id="step-year">
+                    <h3 class="section-subtitle">Selecione o ano da edição</h3>
+                    <div class="years-container" id="years-container">
+                        <!-- Years will be populated by JavaScript -->
+                    </div>
+                    <a href="#" class="back-btn" id="back-to-olympiad"><i class="fas fa-arrow-left"></i> Voltar para Olimpíadas</a>
+                </div>
+                
+                <!-- Step 3: Select Phase -->
+                <div class="selector-step" id="step-phase">
+                    <h3 class="section-subtitle">Selecione a fase da prova</h3>
+                    <div class="phases-container" id="phases-container">
+                        <!-- Phases will be populated by JavaScript -->
+                    </div>
+                    <a href="#" class="back-btn" id="back-to-year"><i class="fas fa-arrow-left"></i> Voltar para Anos</a>
+                </div>
+                
+                <!-- Step 4: Access Button -->
+                <div class="access-container" id="access-container">
+                    <h3>Prova Selecionada</h3>
+                    <p id="selected-prova">OBB - 2025 - Fase 1</p>
+                    
+                    <!-- CORREÇÃO 2: Container para organizar os botões verticalmente -->
+                    <div class="access-buttons">
+                        <a href="#" class="access-btn" id="access-btn" target="_blank">ACESSAR PROVA</a>
+                        <a href="#" class="back-btn" id="back-to-phase"><i class="fas fa-arrow-left"></i> Voltar para Fases</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>Biolímpicos</h3>
+                    <p>Transformando a educação científica através das olimpíadas de conhecimento.</p>
+                    <div class="social-links">
+                        <a href="https://instagram.com/biolimpicos" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="mailto:biolimpicosoficial@gmail.com"><i class="fas fa-envelope"></i></a>
+                        <a href="https://chat.whatsapp.com/FUYDiYjtTbQKERvcwHp1K7" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://youtube.com/biolimpicos" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="https://linkedin.com/company/biolimpicos" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="https://sites.google.com/view/biolimpicos/plataforma"><i class="fas fa-book"></i> Plataforma</a></li>
+                        <li><a href="https://sites.google.com/view/biolimpicos/aulas"><i class="fas fa-video"></i> Aulas</a></li>
+                        <li><a href="https://sites.google.com/view/biolimpicos/noticias"><i class="fas fa-newspaper"></i> Notícias</a></li>
+                        <li><a href="https://sites.google.com/view/biolimpicos/sobre"><i class="fas fa-info-circle"></i> Sobre</a></li>
+                        <li><a href="https://forms.gle/YXbcEjf83MG7Fiz48"><i class="fas fa-hands-helping"></i> Voluntários</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Olimpíadas</h3>
+                    <ul class="footer-links">
+                        <li><a href="https://olimpiadasdebiologia.butantan.gov.br/"><i class="fas fa-dna"></i> OBB</a></li>
+                        <li><a href="http://www.obciencias.com.br/"><i class="fas fa-flask"></i> OBC</a></li>
+                        <li><a href="https://www.ibo-info.org/en/"><i class="fas fa-globe-americas"></i> IBO</a></li>
+                        <li><a href="https://www.obmep.org.br/"><i class="fas fa-leaf"></i> OBSMA</a></li>
+                        <li><a href="http://www.brainbee-brasil.com/"><i class="fas fa-brain"></i> Neurociências</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:biolimpicosoficial@gmail.com"><i class="fas fa-envelope"></i> biolimpicosoficial@gmail.com</a></li>
+                        <li><a href="https://instagram.com/biolimpicos" target="_blank"><i class="fab fa-instagram"></i> @biolimpicos</a></li>
+                        <li><a href="https://forms.gle/YXbcEjf83MG7Fiz48"><i class="fas fa-file-alt"></i> Formulário de Voluntários</a></li>
+                        <li><a href="https://chat.whatsapp.com/FUYDiYjtTbQKERvcwHp1K7"><i class="fab fa-whatsapp"></i> Comunidade WhatsApp</a></li>
+                        <li><a href="https://youtube.com/biolimpicos" target="_blank"><i class="fab fa-youtube"></i> Canal do YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2020-2025 Biolímpicos. Todos os direitos reservados.</p>
+                <p>Todo o conteúdo deste projeto é protegido por leis de direitos autorais e propriedade intelectual.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle com animação
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navMenu = document.querySelector('nav ul');
+        const mobileOverlay = document.querySelector('.mobile-overlay');
+        const navLinks = document.querySelectorAll('nav ul li a');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('show');
+            mobileMenuBtn.classList.toggle('active');
+            mobileOverlay.classList.toggle('active');
+        });
+        
+        // Fechar o menu ao clicar no overlay
+        mobileOverlay.addEventListener('click', () => {
+            navMenu.classList.remove('show');
+            mobileMenuBtn.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+        });
+        
+        // Fechar o menu ao clicar em um link
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('show');
+                mobileMenuBtn.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+            });
+        });
+        
+        // Dados das provas com mais edições
+        const provas = {
+            "OBB": {
+                name: "Olimpíada Brasileira de Biologia",
+                years: {
+                    "2025": {
+                        phases: {
+                            "Fase 1": "https://olimpiadasdebiologia.butantan.gov.br/provas/2025/fase1",
+                            "Fase 2": "https://olimpiadasdebiologia.butantan.gov.br/provas/2025/fase2"
+                        }
+                    },
+                    "2024": {
+                        phases: {
+                            "Fase 1": "https://olimpiadasdebiologia.butantan.gov.br/provas/2024/fase1",
+                            "Fase 2": "https://olimpiadasdebiologia.butantan.gov.br/provas/2024/fase2",
+                            "Fase 3": "https://olimpiadasdebiologia.butantan.gov.br/provas/2024/fase3"
+                        }
+                    },
+                    "2023": {
+                        phases: {
+                            "Fase 1": "https://olimpiadasdebiologia.butantan.gov.br/provas/2023/fase1",
+                            "Fase 2": "https://olimpiadasdebiologia.butantan.gov.br/provas/2023/fase2"
+                        }
+                    },
+                    "2022": {
+                        phases: {
+                            "Fase 1": "https://olimpiadasdebiologia.butantan.gov.br/provas/2022/fase1",
+                            "Fase 2": "https://olimpiadasdebiologia.butantan.gov.br/provas/2022/fase2"
+                        }
+                    },
+                    "2021": {
+                        phases: {
+                            "Fase 1": "https://olimpiadasdebiologia.butantan.gov.br/provas/2021/fase1",
+                            "Fase 2": "https://olimpiadasdebiologia.butantan.gov.br/provas/2021/fase2"
+                        }
+                    }
+                }
+            },
+            "OBC": {
+                name: "Olimpíada Brasileira de Ciências",
+                years: {
+                    "2025": {
+                        phases: {
+                            "Fase Única": "http://www.obciencias.com.br/provas/2025"
+                        }
+                    },
+                    "2024": {
+                        phases: {
+                            "Fase Única": "http://www.obciencias.com.br/provas/2024"
+                        }
+                    },
+                    "2023": {
+                        phases: {
+                            "Fase Única": "http://www.obciencias.com.br/provas/2023"
+                        }
+                    },
+                    "2022": {
+                        phases: {
+                            "Fase Única": "http://www.obciencias.com.br/provas/2022"
+                        }
+                    }
+                }
+            },
+            "IBO": {
+                name: "Olimpíada Internacional de Biologia",
+                years: {
+                    "2025": {
+                        phases: {
+                            "Prova Teórica": "https://www.ibo-info.org/provas/2025/teorica",
+                            "Prova Prática": "https://www.ibo-info.org/provas/2025/pratica"
+                        }
+                    },
+                    "2024": {
+                        phases: {
+                            "Prova Teórica": "https://www.ibo-info.org/provas/2024/teorica",
+                            "Prova Prática": "https://www.ibo-info.org/provas/2024/pratica"
+                        }
+                    },
+                    "2023": {
+                        phases: {
+                            "Prova Teórica": "https://www.ibo-info.org/provas/2023/teorica",
+                            "Prova Prática": "https://www.ibo-info.org/provas/2023/pratica"
+                        }
+                    },
+                    "2022": {
+                        phases: {
+                            "Prova Teórica": "https://www.ibo-info.org/provas/2022/teorica",
+                            "Prova Prática": "https://www.ibo-info.org/provas/2022/pratica"
+                        }
+                    }
+                }
+            },
+            "OIAB": {
+                name: "Olimpíada Ibero-americana de Biologia",
+                years: {
+                    "2025": {
+                        phases: {
+                            "Prova Completa": "https://olimpiada.butantan.gov.br/olimpiadas/oiab/2025"
+                        }
+                    },
+                    "2024": {
+                        phases: {
+                            "Prova Completa": "https://olimpiada.butantan.gov.br/olimpiadas/oiab/2024"
+                        }
+                    },
+                    "2023": {
+                        phases: {
+                            "Prova Completa": "https://olimpiada.butantan.gov.br/olimpiadas/oiab/2023"
+                        }
+                    },
+                    "2022": {
+                        phases: {
+                            "Prova Completa": "https://olimpiada.butantan.gov.br/olimpiadas/oiab/2022"
+                        }
+                    }
+                }
+            },
+            "OBN": {
+                name: "Olimpíada Brasileira de Neurociências",
+                years: {
+                    "2025": {
+                        phases: {
+                            "Fase 1": "http://www.brainbee-brasil.com/provas/2025/fase1",
+                            "Fase 2": "http://www.brainbee-brasil.com/provas/2025/fase2"
+                        }
+                    },
+                    "2024": {
+                        phases: {
+                            "Fase 1": "http://www.brainbee-brasil.com/provas/2024/fase1",
+                            "Fase 2": "http://www.brainbee-brasil.com/provas/2024/fase2"
+                        }
+                    },
+                    "2023": {
+                        phases: {
+                            "Fase 1": "http://www.brainbee-brasil.com/provas/2023/fase1",
+                            "Fase 2": "http://www.brainbee-brasil.com/provas/2023/fase2"
+                        }
+                    }
+                }
+            },
+            "OBAP": {
+                name: "Olimpíada Brasileira de Agropecuária",
+                years: {
+                    "2025": {
+                        phases: {
+                            "Fase Regional": "https://olimpiadasdeagronomia.com.br/provas/2025/regional",
+                            "Fase Nacional": "https://olimpiadasdeagronomia.com.br/provas/2025/nacional"
+                        }
+                    },
+                    "2024": {
+                        phases: {
+                            "Fase Regional": "https://olimpiadasdeagronomia.com.br/provas/2024/regional",
+                            "Fase Nacional": "https://olimpiadasdeagronomia.com.br/provas/2024/nacional"
+                        }
+                    },
+                    "2023": {
+                        phases: {
+                            "Fase Regional": "https://olimpiadasdeagronomia.com.br/provas/2023/regional",
+                            "Fase Nacional": "https://olimpiadasdeagronomia.com.br/provas/2023/nacional"
+                        }
+                    }
+                }
+            }
+        };
+        
+        // Estado atual da seleção
+        let currentSelection = {
+            olympiad: null,
+            year: null,
+            phase: null
+        };
+        
+        // Elementos DOM
+        const stepProgress = document.getElementById('step-progress');
+        const step1 = document.getElementById('step-1');
+        const step2 = document.getElementById('step-2');
+        const step3 = document.getElementById('step-3');
+        const step4 = document.getElementById('step-4');
+        const stepOlympiad = document.getElementById('step-olympiad');
+        const stepYear = document.getElementById('step-year');
+        const stepPhase = document.getElementById('step-phase');
+        const accessContainer = document.getElementById('access-container');
+        const selectedProva = document.getElementById('selected-prova');
+        const accessBtn = document.getElementById('access-btn');
+        const yearsContainer = document.getElementById('years-container');
+        const phasesContainer = document.getElementById('phases-container');
+        
+        // Botões de voltar
+        const backToOlympiad = document.getElementById('back-to-olympiad');
+        const backToYear = document.getElementById('back-to-year');
+        const backToPhase = document.getElementById('back-to-phase');
+        
+        // Selecionar Olimpíada
+        const olympiadCards = document.querySelectorAll('.selector-card[data-olympiad]');
+        olympiadCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Remover seleção anterior
+                olympiadCards.forEach(c => c.classList.remove('selected'));
+                
+                // Selecionar atual
+                card.classList.add('selected');
+                const olympiad = card.getAttribute('data-olympiad');
+                currentSelection.olympiad = olympiad;
+                
+                // Atualizar passos
+                step1.classList.remove('active');
+                step2.classList.add('active');
+                stepProgress.style.width = '25%';
+                
+                // Mostrar próximo passo com animação
+                stepOlympiad.classList.remove('active');
+                setTimeout(() => {
+                    stepYear.classList.add('active');
+                    // Scroll para a seção de ano em mobile
+                    if (window.innerWidth <= 768) {
+                        document.querySelector('.section-subtitle').scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 300);
+                stepPhase.classList.remove('active');
+                accessContainer.classList.remove('show');
+                
+                // Preencher anos disponíveis
+                populateYears(olympiad);
+            });
+        });
+        
+        // Função para preencher os anos
+        function populateYears(olympiad) {
+            yearsContainer.innerHTML = '';
+            
+            const years = Object.keys(provas[olympiad].years).sort((a, b) => b - a);
+            
+            years.forEach(year => {
+                const yearBtn = document.createElement('button');
+                yearBtn.className = 'year-btn';
+                yearBtn.textContent = year;
+                yearBtn.addEventListener('click', () => {
+                    // Remover seleção anterior
+                    document.querySelectorAll('.year-btn').forEach(btn => btn.classList.remove('selected'));
+                    
+                    // Selecionar atual
+                    yearBtn.classList.add('selected');
+                    currentSelection.year = year;
+                    
+                    // Atualizar passos
+                    step2.classList.remove('active');
+                    step3.classList.add('active');
+                    stepProgress.style.width = '50%';
+                    
+                    // Mostrar próximo passo com animação
+                    stepYear.classList.remove('active');
+                    setTimeout(() => {
+                        stepPhase.classList.add('active');
+                        // Scroll para a seção de fase em mobile
+                        if (window.innerWidth <= 768) {
+                            document.querySelector('.section-subtitle').scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }, 300);
+                    accessContainer.classList.remove('show');
+                    
+                    // Preencher fases disponíveis
+                    populatePhases(olympiad, year);
+                });
+                
+                yearsContainer.appendChild(yearBtn);
+            });
+        }
+        
+        // Função para preencher as fases
+        function populatePhases(olympiad, year) {
+            phasesContainer.innerHTML = '';
+            
+            const phases = provas[olympiad].years[year].phases;
+            
+            for (const [phaseName, phaseLink] of Object.entries(phases)) {
+                const phaseCard = document.createElement('div');
+                phaseCard.className = 'phase-card';
+                phaseCard.innerHTML = `
+                    <div class="phase-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>${phaseName}</h3>
+                    <p>Prova de ${phaseName.toLowerCase()} da ${olympiad} ${year}</p>
+                `;
+                
+                phaseCard.addEventListener('click', () => {
+                    // Remover seleção anterior
+                    document.querySelectorAll('.phase-card').forEach(card => card.classList.remove('selected'));
+                    
+                    // Selecionar atual
+                    phaseCard.classList.add('selected');
+                    currentSelection.phase = phaseName;
+                    
+                    // Atualizar passos
+                    step3.classList.remove('active');
+                    step4.classList.add('active');
+                    stepProgress.style.width = '75%';
+                    
+                    // Mostrar acesso à prova com animação
+                    stepPhase.classList.remove('active');
+                    setTimeout(() => {
+                        selectedProva.textContent = `${olympiad} - ${year} - ${phaseName}`;
+                        accessBtn.href = phaseLink;
+                        accessContainer.classList.add('show');
+                        // Scroll para a seção de acesso em mobile
+                        if (window.innerWidth <= 768) {
+                            accessContainer.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }, 300);
+                });
+                
+                phasesContainer.appendChild(phaseCard);
+            }
+        }
+        
+        // Botão de acesso à prova
+        accessBtn.addEventListener('click', () => {
+            // Simulando acesso à prova
+            console.log(`Acessando prova: ${currentSelection.olympiad} ${currentSelection.year} ${currentSelection.phase}`);
+        });
+        
+        // Funcionalidade de voltar
+        backToOlympiad.addEventListener('click', (e) => {
+            e.preventDefault();
+            step2.classList.remove('active');
+            step1.classList.add('active');
+            stepProgress.style.width = '0%';
+            stepYear.classList.remove('active');
+            stepOlympiad.classList.add('active');
+            accessContainer.classList.remove('show');
+        });
+        
+        backToYear.addEventListener('click', (e) => {
+            e.preventDefault();
+            step3.classList.remove('active');
+            step2.classList.add('active');
+            stepProgress.style.width = '25%';
+            stepPhase.classList.remove('active');
+            stepYear.classList.add('active');
+            accessContainer.classList.remove('show');
+        });
+        
+        backToPhase.addEventListener('click', (e) => {
+            e.preventDefault();
+            step4.classList.remove('active');
+            step3.classList.add('active');
+            stepProgress.style.width = '50%';
+            accessContainer.classList.remove('show');
+            stepPhase.classList.add('active');
+        });
+        
+        // Inicialização
+        stepProgress.style.width = '0%';
+    </script>
+</body>
+</html>
